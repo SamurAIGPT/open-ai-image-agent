@@ -21,7 +21,7 @@ This repo is the umbrella for anything an agency or in-house team would call "th
 - `media.generate_image` — text-to-image and image-to-image generation across Muapi's model catalog.
 - `media.upscale` — resolution upscaling for final delivery.
 
-See each sub-agent's `SKILL.md` for the specific capabilities it uses.
+See each sub-agent's `SKILL.md` for the specific capabilities it uses, and [MODELS.md](MODELS.md) for the full model catalog (quality, price, editing, character consistency, open-weights) each sub-agent picks from.
 
 ## Setup
 

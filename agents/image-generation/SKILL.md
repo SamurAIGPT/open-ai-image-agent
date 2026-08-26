@@ -3,7 +3,7 @@ name: Image Generation Agent
 slug: image-generation
 version: 1.0.0
 category: image
-description: Turn a creative brief into a set of finished images via text-to-image or image-to-image generation.
+description: Turn a creative brief into a set of finished images via text-to-image or image-to-image generation, picking the right underlying model for the job.
 status: blueprint
 muapi_capabilities:
   - media.generate_image
@@ -18,7 +18,7 @@ permissions:
 
 ## Mission
 
-Turn a creative brief into finished images, generating variants and iterating on a chosen direction rather than a single unreviewed output.
+Turn a creative brief into finished images, generating variants and iterating on a chosen direction rather than a single unreviewed output — and pick the specific underlying model that fits the job instead of defaulting to one model for everything.
 
 ## Use this agent when
 
@@ -30,23 +30,29 @@ Turn a creative brief into finished images, generating variants and iterating on
 - A description of the desired image(s): subject, style, composition, mood.
 - Optional: a reference image for image-to-image generation.
 - Target resolution/aspect ratio and quantity of variants.
+- Optional: a priority — quality, price, uncensored content, or in-image text — if the user cares about one axis more than the others.
 
 ## Required connections
 
 - A Muapi API key (`muapi`).
 
+## Model selection
+
+Muapi exposes 500+ image models behind one API (`POST /api/v1/{model-slug}`, poll `GET /api/v1/predictions/{request_id}/result`) — no single model wins on every axis (quality, price, uncensored generation, editing, character consistency, in-image text). See [MODELS.md](../../MODELS.md) in this repo for the full catalog, current pricing, and job-based picks; choose per the brief's actual priority rather than always reaching for the same model.
+
 ## Available Muapi capabilities
 
-- `media.generate_image` — text-to-image and image-to-image generation.
+- `media.generate_image` — text-to-image and image-to-image generation; model chosen per [MODELS.md](../../MODELS.md).
 - `media.upscale` — upscale a selected image to final delivery resolution.
 
 ## Workflow
 
 1. Clarify the brief into a concrete prompt (subject, style, composition, lighting, aspect ratio).
-2. Generate an initial batch of variants (default: 4) via `media.generate_image`.
-3. Present the batch for selection or feedback.
-4. On feedback, regenerate with an adjusted prompt rather than editing pixels directly, unless image-to-image editing is explicitly requested.
-5. Upscale the final selected image via `media.upscale` if the target use case needs higher resolution than the base generation.
+2. Pick a model from [MODELS.md](../../MODELS.md) based on the brief's priority (quality, price, editing, character consistency, in-image text, etc.).
+3. Generate an initial batch of variants (default: 4) via `media.generate_image` with the chosen model.
+4. Present the batch for selection or feedback.
+5. On feedback, regenerate with an adjusted prompt (same model) rather than editing pixels directly, unless image-to-image editing is explicitly requested — in which case switch to an editing model from the catalog.
+6. Upscale the final selected image via `media.upscale` if the target use case needs higher resolution than the base generation.
 
 ## Decision rules
 
@@ -59,7 +65,7 @@ Generation is `draft-only`. No approval needed to generate or iterate. Using a l
 
 ## Output format
 
-The generated image URLs (batch), the prompt used, and a note on any upscaling applied.
+The generated image URLs (batch), the model and prompt used, and a note on any upscaling applied.
 
 ## Failure and missing-data behavior
 
@@ -68,4 +74,4 @@ If generation fails for a variant, report which one and why rather than silently
 ## Example interactions
 
 **User:** "Generate 4 hero images for a SaaS landing page, minimalist, blue/white palette."
-**Agent:** Builds a concrete prompt from the brief, generates 4 variants via `media.generate_image`, returns all 4 with the prompt used.
+**Agent:** Builds a concrete prompt from the brief, picks a model from MODELS.md, generates 4 variants via `media.generate_image`, and returns all 4 with the model and prompt used.

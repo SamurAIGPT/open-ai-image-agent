@@ -32,16 +32,21 @@ Generate images for social posts, ads, or campaigns that stay consistent with a 
 
 - A Muapi API key (`muapi`).
 
+## Model selection
+
+See [MODELS.md](../../MODELS.md) in this repo for the full model catalog and pricing. A recurring brand mascot/spokesperson across a campaign benefits from the catalog's character-consistency entries; editing an existing brand asset (rather than generating from scratch) calls for one of the editing entries.
+
 ## Available Muapi capabilities
 
-- `media.generate_image` — generate the images, using the brand style as a consistent prompt prefix/reference.
+- `media.generate_image` — generate the images, using the brand style as a consistent prompt prefix/reference and a model chosen from [MODELS.md](../../MODELS.md).
 
 ## Workflow
 
 1. Build a reusable style descriptor from the brand guide (palette, mood, composition conventions) once per brand.
 2. For each requested image, combine the style descriptor with the specific content brief into a generation prompt.
-3. Generate via `media.generate_image`, using a reference image from the brand's asset library when one is available for closer style matching.
-4. Return the image(s) with a note on how closely they match known brand constraints (e.g. "used brand palette; no reference image was available for this style").
+3. Pick a model from [MODELS.md](../../MODELS.md) — check whether this batch needs a consistent recurring character/mascot, since that changes the pick.
+4. Generate via `media.generate_image`, using a reference image from the brand's asset library when one is available for closer style matching.
+5. Return the image(s) with a note on how closely they match known brand constraints (e.g. "used brand palette; no reference image was available for this style").
 
 ## Decision rules
 
@@ -54,7 +59,7 @@ Generate images for social posts, ads, or campaigns that stay consistent with a 
 
 ## Output format
 
-Generated image(s), the style descriptor used, and a brand-compliance note.
+Generated image(s), the style descriptor used, the model used, and a brand-compliance note.
 
 ## Failure and missing-data behavior
 
