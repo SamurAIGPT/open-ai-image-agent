@@ -19,6 +19,7 @@ This repo is the umbrella for anything an agency or in-house team would call "th
 ## Required Muapi APIs
 
 - `media.generate_image` — text-to-image and image-to-image generation across Muapi's model catalog.
+- `media.upload_file` — upload a local reference/asset image to get a hosted URL (image-to-image and editing models take a URL, not a local path).
 - `media.upscale` — resolution upscaling for final delivery.
 
 See each sub-agent's `SKILL.md` for the specific capabilities it uses, and [MODELS.md](MODELS.md) for the full model catalog (quality, price, editing, character consistency, open-weights) each sub-agent picks from.

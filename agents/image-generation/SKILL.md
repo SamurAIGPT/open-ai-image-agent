@@ -7,6 +7,7 @@ description: Turn a creative brief into a set of finished images via text-to-ima
 status: blueprint
 muapi_capabilities:
   - media.generate_image
+  - media.upload_file
   - media.upscale
 required_connections:
   - muapi
@@ -28,7 +29,7 @@ Turn a creative brief into finished images, generating variants and iterating on
 ## Required inputs
 
 - A description of the desired image(s): subject, style, composition, mood.
-- Optional: a reference image for image-to-image generation.
+- Optional: a reference image for image-to-image generation — a URL, or a local file (see Model Selection below for how local files get uploaded first).
 - Target resolution/aspect ratio and quantity of variants.
 - Optional: a priority — quality, price, uncensored content, or in-image text — if the user cares about one axis more than the others.
 
@@ -43,16 +44,18 @@ Muapi exposes 500+ image models behind one API (`POST /api/v1/{model-slug}`, pol
 ## Available Muapi capabilities
 
 - `media.generate_image` — text-to-image and image-to-image generation; model chosen per [MODELS.md](../../MODELS.md).
+- `media.upload_file` — upload a local reference image to get a hosted URL (image-to-image models take a URL, not a local path or raw bytes). See [MODELS.md](../../MODELS.md) for the endpoint.
 - `media.upscale` — upscale a selected image to final delivery resolution.
 
 ## Workflow
 
 1. Clarify the brief into a concrete prompt (subject, style, composition, lighting, aspect ratio).
-2. Pick a model from [MODELS.md](../../MODELS.md) based on the brief's priority (quality, price, editing, character consistency, in-image text, etc.).
-3. Generate an initial batch of variants (default: 4) via `media.generate_image` with the chosen model.
-4. Present the batch for selection or feedback.
-5. On feedback, regenerate with an adjusted prompt (same model) rather than editing pixels directly, unless image-to-image editing is explicitly requested — in which case switch to an editing model from the catalog.
-6. Upscale the final selected image via `media.upscale` if the target use case needs higher resolution than the base generation.
+2. If a reference image was supplied as a local file, upload it via `media.upload_file` first to get a hosted URL.
+3. Pick a model from [MODELS.md](../../MODELS.md) based on the brief's priority (quality, price, editing, character consistency, in-image text, etc.).
+4. Generate an initial batch of variants (default: 4) via `media.generate_image` with the chosen model.
+5. Present the batch for selection or feedback.
+6. On feedback, regenerate with an adjusted prompt (same model) rather than editing pixels directly, unless image-to-image editing is explicitly requested — in which case switch to an editing model from the catalog.
+7. Upscale the final selected image via `media.upscale` if the target use case needs higher resolution than the base generation.
 
 ## Decision rules
 

@@ -38,6 +38,22 @@ result = requests.get(
 print(result.json())
 ```
 
+## Using a local image as input
+
+Image-to-image, editing, and reference-based models take a **URL**, not a local file path or raw bytes. If the reference image is a local file, upload it first to get a hosted URL, then pass that URL as the model input.
+
+```
+POST https://api.muapi.ai/api/v1/upload_file
+x-api-key: YOUR_API_KEY
+Content-Type: multipart/form-data
+
+file=@local-image.jpg
+```
+
+Returns `{"url": "https://cdn.muapi.ai/uploads/..."}`. Images are capped at 10MB. The same endpoint also accepts a JSON body `{"url": "https://..."}` to re-host an image that's already at some other URL.
+
+CLI shortcut: `muapi upload file ./local-image.jpg` — prints the hosted URL directly.
+
 ## Full comparison table
 
 | Model | Category | Price | Best for |
