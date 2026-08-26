@@ -4,6 +4,16 @@ An AI agent for image generation and creative/design production — image genera
 
 Part of [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os), an open ecosystem of specialized AI agents for real business work.
 
+## Related Projects
+
+- [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os) — the central catalog this repo is part of.
+- [ai-video-agent](https://github.com/SamurAIGPT/ai-video-agent) — uses this repo's generated images as reference/starting frames for video shots.
+- [ai-voice-agent](https://github.com/SamurAIGPT/ai-voice-agent) — pairs with generated avatar images for talking-head video narration.
+- [ai-social-agent](https://github.com/SamurAIGPT/ai-social-agent) — publishes the thumbnails and brand content this repo generates.
+- [MuAPI specialized apps docs](https://muapi.ai/docs/specialized-apps) — image transformation and enhancement workflows behind the model catalog in `MODELS.md`.
+- [MuAPI MCP docs](https://muapi.ai/docs/mcp) — connect this repo's `SKILL.md` files via MCP.
+- [MuAPI access keys](https://muapi.ai/access-keys) — create the API key this agent needs.
+
 ## What this covers
 
 This repo is the umbrella for anything an agency or in-house team would call "the AI image agent": producing finished, on-brief images at scale without a designer generating each one manually.
