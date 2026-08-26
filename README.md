@@ -7,6 +7,7 @@ Part of [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os), an 
 ## Related Projects
 
 - [Agency Agents OS](https://github.com/Anil-matcha/agency-agents-os) — the central catalog this repo is part of.
+- [ai-youtube-agent](https://github.com/SamurAIGPT/ai-youtube-agent) — uses this repo's thumbnail-generation sub-agent and model picks for YouTube thumbnails.
 - [ai-video-agent](https://github.com/SamurAIGPT/ai-video-agent) — uses this repo's generated images as reference/starting frames for video shots.
 - [ai-voice-agent](https://github.com/SamurAIGPT/ai-voice-agent) — pairs with generated avatar images for talking-head video narration.
 - [ai-social-agent](https://github.com/SamurAIGPT/ai-social-agent) — publishes the thumbnails and brand content this repo generates.
