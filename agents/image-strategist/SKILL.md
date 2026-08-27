@@ -1,7 +1,7 @@
 ---
 name: Image Strategist
 slug: image-strategist
-version: 1.1.0
+version: 1.2.0
 category: image
 description: Route a broad creative brief into the smallest useful general or specialist image workflow, coordinate MuAPI calls, and return one evidence-backed production plan.
 status: ready
@@ -66,7 +66,11 @@ For specialist work, also collect the domain invariant that controls routing:
 - try-on: person and item roles, product invariants, and simulation labeling;
 - group photo: person IDs, order/placement, relationship context, and consent;
 - restoration: original-preservation requirements and reconstructed regions; or
-- interior: room geometry, property permission, and concept versus listing use.
+- interior: room geometry, property permission, and concept versus listing use;
+- storyboard: premise, frame count, continuity bible, and image-only handoff;
+- angle reshoot: approved parent, selected camera views, and continuity facts;
+- UI mockup: platform, screens, design tokens, and implementation boundary; or
+- photo pack: one authorized identity source, categories, and identity lock.
 
 ## Phase 1: establish scope
 
@@ -86,6 +90,10 @@ For specialist work, also collect the domain invariant that controls routing:
 | Combine several authorized portraits into one scene | group-photo-compositing | person map, consent, arrangement, likeness QA |
 | Repair, colorize, or upscale an old/damaged photograph | photo-restoration | original, damage map, preserved versus reconstructed detail |
 | Declutter, redesign, or stage a room | interior-redesign | room geometry, property rights, visualization label |
+| Generate a themed portrait set from one identity source | portrait-photo-pack | identity lock, category matrix, likeness QA |
+| Turn a premise into ordered still keyframes | image-storyboard | continuity sheet, beat order, frame captions |
+| Reshoot a subject or product from selected angles | multi-angle-reshoot | approved parent, angle matrix, parent/child assets |
+| Create mobile or web interface visual mockups | ui-mockups | screen matrix, design tokens, accessibility review |
 | New image from a brief | image-generation | prompt, model schema, variants |
 | Change an existing image | image-editing | source asset, preservation list, edit result |
 | Upscale, extend, remove background, or enhance | image-enhancement | source asset, operation schema, output QA |
@@ -130,12 +138,26 @@ to fork a plan, swap a model, revise one node, or resume from the last completed
 node without regenerating unchanged assets. Do not treat a failed node as an
 empty successful output.
 
+## Optional provider workflow discovery
+
+If the host exposes a workflow catalog or workflow tools, discover matching
+workflows before creating a new multi-step plan. Inspect the selected workflow's
+required inputs and node dependencies, present alternatives when more than one
+matches, and ask the user for missing values. Never guess a prompt, URL, asset,
+or provider input simply because a workflow template contains a default.
+
+If workflow tools are unavailable, use the local plan graph above as the
+portable contract and execute only the individual operations exposed by the
+host. Do not claim that a workflow was created or run when the host only
+supports individual image calls.
+
 ## Phase 2: execute and synthesize
 
 1. Build a structured prompt from the brief. Put immutable facts and prohibited
    changes in a separate preservation block; do not hide them in decorative
    prose. Add the specialist's domain block when routing to portraits, logos,
-   try-on, groups, restoration, or interiors.
+   try-on, groups, restoration, interiors, photo packs, storyboards, angle
+   reshoots, or UI mockups.
 2. Upload local references with `media.upload_file` and record each returned
    URL, role, order, and rights state. Use only fields accepted by the selected
    model schema.

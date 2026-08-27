@@ -1,7 +1,7 @@
 ---
 name: Logo and Brand Identity
 slug: logo-and-brand-identity
-version: 1.0.0
+version: 1.1.0
 category: image
 description: Explore logos, wordmarks, symbols, and compact brand identity directions from approved brand inputs, with legibility and trademark-review gates.
 status: ready
@@ -49,6 +49,17 @@ Collect when relevant:
 - existing brand rules that must be preserved;
 - competitor categories to avoid, review owner, budget, and vector/export needs.
 
+## Brand-system modes
+
+Choose the smallest mode that matches the request:
+
+| Mode | Deliverables | Important caveat |
+|---|---|---|
+| Logo exploration | symbol, wordmark, lockup, icon, monochrome variants | Generated lettering and originality require review. |
+| Brand kit | logo directions, proposed palette, typography pairing, pattern, and usage notes | Color values and font names are proposals until verified. |
+| Design guide | palette/type cards, component previews, application mockups, and do/don't rules | A rendered board is not a production design system. |
+| Application mockups | business card, packaging, social avatar, app icon, or signage | Mockups must not imply that unapproved marks or copy are final. |
+
 ## Workflow
 
 1. Establish a brand brief with `fixed`, `explore`, `avoid`, and `applications`
@@ -65,15 +76,22 @@ Collect when relevant:
 4. Generate a bounded set of concept families, varying one meaningful axis at
    a time: geometric versus organic, typographic versus emblematic, restrained
    versus expressive, or monochrome versus color.
-5. For sketch-to-logo work, use `media.edit_image` and identify what the model
+5. If the user requests a brand kit or design guide, add parallel deliverables
+   for proposed color swatches, typography pairings, pattern/texture, UI
+   components, and one real-world application. Keep the same brand brief in
+   every branch and label all generated values as proposals.
+6. For sketch-to-logo work, use `media.edit_image` and identify what the model
    may reinterpret. Keep exact text and approved marks in a separate
    compositing/layout step whenever possible.
-6. Poll and record every output, including model, prompt, reference roles,
+7. Poll and record every output, including model, prompt, reference roles,
    request ID, status, billing, and provider error.
-7. Review each concept at favicon, mobile, document, and large-display sizes.
+8. Review each concept at favicon, mobile, document, and large-display sizes.
    Check spelling, letterforms, spacing, silhouette, contrast, one-color use,
    embroidery/print plausibility, accidental symbols, and similarity risk.
-8. Select a direction, then request a restrained refinement or upscale. Do not
+9. Review brand-kit/design-guide boards for palette consistency, typography
+   legibility, spacing rhythm, component reuse, contrast, and application
+   consistency. Do not treat model-generated hex labels as measured color values.
+10. Select a direction, then request a restrained refinement or upscale. Do not
    claim that a generated raster is an editable vector; hand off vectorization,
    font licensing, and trademark review as explicit next steps.
 
@@ -87,6 +105,9 @@ Collect when relevant:
   supplied logo beyond the authorized transformation.
 - Keep the concept board and final production files distinct. A polished mockup
   can hide an unusable mark.
+- Keep proposed palettes, font pairings, spacing tokens, and UI components
+  editable and human-verifiable; generated labels are not authoritative design
+  tokens.
 
 ## Output format
 
@@ -97,6 +118,9 @@ Return:
 - preview URLs, asset IDs, request status, and receipt links;
 - legibility, exact-text, color, contrast, and similarity observations;
 - vectorization, font, layout, trademark, and production requirements; and
+- proposed palette roles, typography pairings, design tokens, application
+  mockup notes, and what must be verified manually when a kit or guide was
+  requested; and
 - the recommended concept plus the smallest next iteration.
 
 ## Failure and missing-data behavior

@@ -149,6 +149,31 @@ scene where the original geometry is not a claim. Prefer models that accept a
 room reference and the requested ratio, and review furniture scale, occlusion,
 reflections, and structural drift before labeling a result as a visualization.
 
+### Identity-locked portrait packs
+
+For a themed pack from one portrait, keep the identity reference fixed across
+all branches and vary only scene, wardrobe, pose, lighting, or category. Analyze
+framing and lighting before generation, but do not replace identity with a
+demographic description in the prompt. Use a reference-capable edit model when
+likeness is important and review every face independently before delivery.
+
+### Storyboards and multi-angle sets
+
+For storyboards, choose a model that can produce the requested ratio and repeat
+a continuity sheet for characters, props, locations, palette, lighting, and
+screen direction. Generate frames in beat order even when the calls run in
+parallel. For multi-angle reshoots, establish or approve one parent image first,
+then branch every angle from that parent rather than chaining a drifted angle.
+
+### UI and design mockups
+
+Choose a model with reliable layout and text behavior for the target platform,
+then provide a design specification with components, spacing, typography, color
+tokens, responsive intent, and accessibility constraints. Prefer editing a
+supplied screenshot for a requested visual change. Review hierarchy, alignment,
+contrast, overflow, localization, and placeholder-copy risk; a polished raster
+does not certify usability or production readiness.
+
 ## Live discovery
 
 When the hosted MCP transport is available, use `search_models` by category or

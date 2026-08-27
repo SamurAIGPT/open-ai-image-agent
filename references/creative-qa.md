@@ -83,6 +83,25 @@ composited.
 - Mark altered images as visualization/concept when they could be mistaken for
   an unmodified listing photograph.
 
+### Storyboards and multi-angle sets
+
+- Review frames or angles against one continuity sheet: identity, wardrobe,
+  product geometry, props, location, palette, light direction, lens grammar,
+  eyelines, and screen direction.
+- Keep the approved parent visible in the asset record and do not chain later
+  branches from a drifted or failed child.
+- Label invented hidden surfaces, fictional events, and reconstructed scenes;
+  a sequence of plausible frames is not evidence that an event occurred.
+
+### UI and design mockups
+
+- Check hierarchy, alignment, spacing, component reuse, contrast, focus/label
+  cues, localization, overflow, and responsive assumptions.
+- Treat generated copy, metrics, prices, logos, testimonials, and product
+  claims as placeholders until verified.
+- Label the output as a visual mockup. It is not functional software, a tested
+  interaction, or an accessibility certification.
+
 ## Commercial and platform review
 
 - Separate a platform's primary image from secondary, lifestyle, infographic,

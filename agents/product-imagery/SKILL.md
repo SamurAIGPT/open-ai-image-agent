@@ -65,10 +65,27 @@ concept.
 | Reseller refresh | background cleanup, crop, lighting, condition-preserving enhancement | Improve presentation without hiding damage or changing the item being sold. |
 | Lifestyle campaign | hero scene, use context, seasonal or audience variant | Treat generated setting as creative context; do not invent product performance. |
 | Pet or companion-product scene | product plus animal/owner context | Preserve product truth and label animal/owner behavior as illustrative. |
+| Multi-angle product set | front, three-quarter, side, back, top-down, macro | Use source-based editing where hidden surfaces or exact geometry matter. |
 
 Label uploaded inputs as `product-primary`, `product-detail`, `packaging`,
 `scale`, `style`, `background`, `prop`, or `layout`. `style` and `background`
 references may influence composition but must not replace the product identity.
+
+### Multi-angle product rules
+
+Choose only the views needed for the category. A useful starting matrix is:
+
+| View | Typical purpose | Review focus |
+|---|---|---|
+| Front/primary | listing or catalog baseline | centering, label, color, count |
+| Three-quarter/side | silhouette and depth | proportions, seams, controls, closures |
+| Back/top-down | rear details or flat lay | hidden surfaces, ports, packaging, scale |
+| Macro/detail | material or feature evidence | texture, text, logo, invented detail |
+| Hero/lifestyle | campaign context | product truth versus creative setting |
+
+If a supplied reference does not show a hidden side, label that view as a
+concept or request an additional source. Do not treat a generated back view as
+verified documentation.
 
 ## Workflow
 

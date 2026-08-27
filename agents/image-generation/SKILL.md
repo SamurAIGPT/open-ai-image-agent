@@ -1,7 +1,7 @@
 ---
 name: Image Generation
 slug: image-generation
-version: 1.1.0
+version: 1.2.0
 category: image
 description: Turn a creative brief into a bounded set of text-to-image or reference-guided image candidates, selecting the MuAPI model and parameters for the actual job.
 status: ready
@@ -61,14 +61,35 @@ Use [MODELS.md](../../MODELS.md) and the live schema in
 the required aspect ratio, resolution, reference count, output count, and
 quality controls before sending the request.
 
+## Reasoning-driven prompt protocol
+
+Rewrite a fragmented request into a short creative brief before calling the
+model. Use this order:
+
+1. `subject`: what must be depicted and which facts are fixed;
+2. `action/state`: what the subject is doing or how it is arranged;
+3. `context`: setting, atmosphere, time, and physical environment;
+4. `composition`: framing, camera position, focal point, lens feel, and depth;
+5. `lighting`: direction, quality, color, reflections, and shadow behavior;
+6. `style`: medium, finish, palette, and intended audience; and
+7. `text/delivery`: exact short copy, safe space, aspect ratio, and output needs.
+
+Use complete sentences that explain physical relationships, such as how a light
+source casts a shadow or how a reflective surface responds to its environment.
+Avoid keyword soup such as “8K, masterpiece, ultra-detailed” when it adds no
+constraint. For exact lettering, put quoted copy in a separate text block and
+prefer post-production layout. Treat negative constraints as positive outcomes:
+“keep the subject sharply focused and anatomically coherent” is more useful
+than a long list of vague quality tags.
+
 ## Workflow
 
 1. Read `.image/project.md` and compatible prior runs when available. Reuse a
    confirmed style descriptor or asset manifest rather than rebuilding it from
    memory.
-2. Normalize the brief into subject, action/state, setting, composition,
-   camera/lighting, style, palette, text direction, negative constraints,
-   format, and acceptance checks.
+2. Normalize the brief into the reasoning-driven structure above: subject,
+   action/state, setting, composition, camera/lighting, style, palette, text
+   direction, negative constraints, format, and acceptance checks.
 3. Separate immutable facts from creative choices. For products, record exact
    SKU/shape/color/quantity facts. For people, record identity/consent and
    requested likeness boundaries. For brands, record approved style rules.

@@ -58,14 +58,18 @@ def main() -> int:
         "image-generation",
         "image-project-setup",
         "image-strategist",
+        "image-storyboard",
         "group-photo-compositing",
         "interior-redesign",
         "logo-and-brand-identity",
+        "multi-angle-reshoot",
         "photo-restoration",
+        "portrait-photo-pack",
         "professional-headshots",
         "product-imagery",
         "social-pack",
         "thumbnail-generation",
+        "ui-mockups",
         "virtual-try-on",
     }
     actual_slugs = {skill.parent.name for skill in skills}

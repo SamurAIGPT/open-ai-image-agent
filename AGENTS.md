@@ -57,6 +57,10 @@ Use the narrowest specialist when the request has a clear domain constraint:
 | Several authorized portraits in one scene | `agents/group-photo-compositing/SKILL.md` |
 | Faded, scratched, damaged, or historical photo | `agents/photo-restoration/SKILL.md` |
 | Room decluttering, redesign, or property staging | `agents/interior-redesign/SKILL.md` |
+| Themed portrait pack from one authorized identity source | `agents/portrait-photo-pack/SKILL.md` |
+| Ordered still frames for a story, pitch, or animation handoff | `agents/image-storyboard/SKILL.md` |
+| Alternate camera views of an approved subject or product | `agents/multi-angle-reshoot/SKILL.md` |
+| Mobile, web, SaaS, or ecommerce interface mockups | `agents/ui-mockups/SKILL.md` |
 
 Load [creative QA](references/creative-qa.md) for identity, likeness, product,
 brand, property, or historical-content work. Keep specialist outputs draft-only
