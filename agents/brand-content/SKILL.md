@@ -1,74 +1,99 @@
 ---
-name: Brand Content Agent
+name: Brand Content
 slug: brand-content
-version: 1.0.0
+version: 1.1.0
 category: image
-description: Generate on-brand social/ad images consistent with a defined style guide and asset library.
-status: blueprint
+description: Generate on-brand social or advertising image candidates from a confirmed brand system and asset library, with explicit compliance checks.
+status: ready
 muapi_capabilities:
   - media.generate_image
+  - media.edit_image
   - media.upload_file
+  - media.check_result
+  - media.search_models
 required_connections:
   - muapi
 permissions:
   - draft-only
+  - workspace-write
 ---
 
-# Brand Content Agent
+# Brand Content
 
 ## Mission
 
-Generate images for social posts, ads, or campaigns that stay consistent with a brand's defined visual style — palette, tone, typography treatment — rather than generic AI-image output.
-
-## Use this agent when
-
-- A user has a brand style guide (colors, tone, reference images) and needs new on-brand images at volume.
+Generate a repeatable set of social, ad, or campaign visuals that follows a
+confirmed brand system rather than a generic aesthetic. Exact pixel-level
+compliance is not guaranteed by a prompt; the workflow must surface deviations.
 
 ## Required inputs
 
-- A brand style description or style guide (palette, mood, reference images).
-- The content brief for each specific image (what it needs to depict).
+- Brand style guide or confirmed style descriptor.
+- Specific content brief and intended channel/placement.
+- Approved palette, tone, typography treatment, logo rules, and prohibited
+  motifs.
+- Reference asset library and rights state.
 
-## Required connections
+Collect when relevant:
 
-- A Muapi API key (`muapi`).
+- audience, campaign goal, message, and approved copy/claims;
+- product/SKU facts and identity/mascot constraints;
+- dimensions, safe areas, localization, variant count, and budget;
+- reviewer, approval gate, and post-production layout plan.
+
+If no style guide, palette, tone, or references are supplied, use
+[Image Project Setup](../image-project-setup/SKILL.md) first. Do not guess a
+brand identity.
 
 ## Model selection
 
-See [MODELS.md](../../MODELS.md) in this repo for the full model catalog and pricing. A recurring brand mascot/spokesperson across a campaign benefits from the catalog's character-consistency entries; editing an existing brand asset (rather than generating from scratch) calls for one of the editing entries.
-
-## Available Muapi capabilities
-
-- `media.generate_image` — generate the images, using the brand style as a consistent prompt prefix/reference and a model chosen from [MODELS.md](../../MODELS.md).
-- `media.upload_file` — upload a local brand asset to get a hosted URL when the asset library reference isn't already hosted. See [MODELS.md](../../MODELS.md) for the endpoint.
+Use [MODELS.md](../../MODELS.md) and the live tool contract in
+[references/muapi-image-tools.md](../../references/muapi-image-tools.md). Use an
+editing/reference-capable model when a real logo, product, mascot, or recurring
+person must remain stable.
 
 ## Workflow
 
-1. Build a reusable style descriptor from the brand guide (palette, mood, composition conventions) once per brand.
-2. For each requested image, combine the style descriptor with the specific content brief into a generation prompt.
-3. If the brand asset-library reference is a local file, upload it via `media.upload_file` first to get a hosted URL.
-4. Pick a model from [MODELS.md](../../MODELS.md) — check whether this batch needs a consistent recurring character/mascot, since that changes the pick.
-5. Generate via `media.generate_image`, using the reference image from the brand's asset library when one is available for closer style matching.
-6. Return the image(s) with a note on how closely they match known brand constraints (e.g. "used brand palette; no reference image was available for this style").
+1. Read `.image/project.md` and prior selected assets. Build a reusable style
+   descriptor containing palette, contrast, lighting, composition, texture,
+   typography treatment, tone, and exclusions. Keep it stable across the batch.
+2. Separate brand invariants from the per-asset brief. Record exact logo,
+   product, copy, claims, and identity details that may not change.
+3. Confirm rights for local style boards, logos, product assets, and likenesses.
+   Upload each local reference once through `media.upload_file`, recording its
+   role and order.
+4. Choose the model per task: text-to-image for a new scene, editing for an
+   existing brand/product asset, and a consistency-capable model for a
+   recurring identity when the live schema supports it.
+5. State the planned calls, formats, variant count, cost signal, and review gate
+   before a batch. Generate independent assets in parallel when possible.
+6. Poll and preserve each result with model, prompt, parameters, request ID,
+   status, URL, billing, and source roles.
+7. Check each candidate against the style descriptor and fixed facts: palette,
+   contrast, logo treatment, typography space, product/identity fidelity,
+   message, artifacts, crop, and platform format.
+8. Flag deviations explicitly. Iterate the smallest offending variable or send
+   the selected candidate to an editing/enhancement workflow; do not silently
+   label a visually inconsistent output “on brand.”
 
 ## Decision rules
 
-- Reuse the same style descriptor across a batch so outputs stay visually consistent with each other, not just with the brief.
-- Flag outputs that deviate from the stated brand palette rather than silently shipping them.
-
-## Approval boundaries
-
-`draft-only`. Brand content should be reviewed by a human against the actual style guide before publishing, since exact pixel-level brand compliance isn't guaranteed.
+- A style descriptor is a consistency aid, not proof of brand compliance.
+- Keep exact text, logos, legal copy, prices, and claims in approved layout or
+  post-production whenever possible.
+- Do not invent social proof, ratings, badges, product features, or claims.
+- Reuse one descriptor and the same reference roles across a batch so the
+  outputs can be compared meaningfully.
 
 ## Output format
 
-Generated image(s), the style descriptor used, the model used, and a brand-compliance note.
+Return the style descriptor used, per-asset brief, reference roles, model/tool,
+parameters, output URL/status, brand-compliance checklist, deviations,
+post-production requirements, rights/claims limitations, and receipt links.
 
 ## Failure and missing-data behavior
 
-If no brand style guide is supplied, ask for one (palette, tone, reference images) before generating — do not guess a brand identity.
-
-## Example interactions
-
-**User:** "Generate an Instagram post image announcing our new feature, matching our brand style guide."
-**Agent:** Builds a style descriptor from the brand's stored palette/mood, generates a square image combining that style with the feature-announcement brief, and returns it with a compliance note.
+If required brand facts or rights are missing, pause before paid generation and
+ask for them. If one asset fails or deviates, preserve that result and explain
+the smallest retry or manual correction instead of silently returning a smaller
+or supposedly compliant set.

@@ -1,100 +1,131 @@
-# Image Model Catalog
+# Image model selection guide
 
-Muapi exposes 500+ image models behind one API and one API key. No single model wins on every axis — quality, price, uncensored generation, editing, character consistency, and open-weights all trade off differently. Pick the model per job, not by habit. Every sub-agent in this repo references this catalog for its model picks.
+MuAPI puts many image models behind one connection. This file is a curated
+decision guide, not a frozen copy of the provider catalog. The endpoint names
+and schema examples below were checked on **2026-08-28**; re-check the live
+schema, `search_models` tool, or current provider documentation before a paid
+run.
 
-## How to call it
+## Select by job
 
-```
-POST https://api.muapi.ai/api/v1/{model-slug}
-Content-Type: application/json
-x-api-key: YOUR_API_KEY
+Choose the operation first, then the model. Preserve fixed product, person,
+brand, and text facts with an editing or compositing workflow instead of
+expecting a text-to-image model to redraw them perfectly.
 
-{ "prompt": "..." }
-```
-
-Poll `GET https://api.muapi.ai/api/v1/predictions/{request_id}/result` until `status` is `completed`, then use the output URL.
-
-```bash
-curl -X POST https://api.muapi.ai/api/v1/gpt-image-2-text-to-image \
-  -H "Content-Type: application/json" \
-  -H "x-api-key: YOUR_API_KEY" \
-  -d '{"prompt": "a neon-lit night market street in Tokyo, photoreal"}'
-```
-
-```python
-import requests
-
-response = requests.post(
-    "https://api.muapi.ai/api/v1/gpt-image-2-text-to-image",
-    headers={"x-api-key": "YOUR_API_KEY"},
-    json={"prompt": "a neon-lit night market street in Tokyo, photoreal"},
-)
-request_id = response.json()["request_id"]
-
-result = requests.get(
-    f"https://api.muapi.ai/api/v1/predictions/{request_id}/result",
-    headers={"x-api-key": "YOUR_API_KEY"},
-)
-print(result.json())
-```
-
-## Using a local image as input
-
-Image-to-image, editing, and reference-based models take a **URL**, not a local file path or raw bytes. If the reference image is a local file, upload it first to get a hosted URL, then pass that URL as the model input.
-
-```
-POST https://api.muapi.ai/api/v1/upload_file
-x-api-key: YOUR_API_KEY
-Content-Type: multipart/form-data
-
-file=@local-image.jpg
-```
-
-Returns `{"url": "https://cdn.muapi.ai/uploads/..."}`. Images are capped at 10MB. The same endpoint also accepts a JSON body `{"url": "https://..."}` to re-host an image that's already at some other URL.
-
-CLI shortcut: `muapi upload file ./local-image.jpg` — prints the hosted URL directly.
-
-## Full comparison table
-
-| Model | Category | Price | Best for |
+| Job | Starting point | REST path example | Main trade-off |
 |---|---|---|---|
-| GPT Image 2 | Best Quality #1 | $0.09/image | Artificial Analysis Arena #1 (Elo 1370), clean multilingual text rendering |
-| Nano Banana Pro | Best Quality #2 | $0.12/image | Photorealism, coherent local edits, spatial understanding |
-| Seedream 5.0 Pro | Best Quality #3 | $0.045/image | Strongest stylized/artistic output |
-| Midjourney v8 | Best Quality #4 | $0.10/image | Aesthetic-quality benchmark for pure image generation |
-| Imagen 4 Ultra | Best Quality #5 | $0.06/image | Strong prompt adherence |
-| Z-Image Turbo | Best Value #1 | $0.007/image | Price/quality sweet spot, not just the cheapest option |
-| Flux-2 Klein 4B Turbo | Best Value #2 | $0.0052/image | Half the price of standard Klein 4B, same quality |
-| Flux.1 Schnell | Best Value #3 | $0.003/image | Near-instant generation, classic low-cost workhorse |
-| SDXL | Best Value #4 | $0.004/image | Lowest possible cost per pixel |
-| Wan 2.7 | Best Uncensored #1 | $0.05/image | Near-zero prompt filtering |
-| Qwen Image 2.0 | Best Uncensored #2 | $0.04/image | Confirmed NSFW capability, no prompt-rewriting layer |
-| Seedream 5.0 | Best Uncensored #3 | $0.0325/image | Open pipeline, no surprise censorship |
-| Grok Imagine | Best Uncensored #4 | $0.05/image | Looser content policy than mainstream closed models |
-| Nano Banana Pro Edit | Best Editing #1 | $0.12/generation | Coherent object insertion/removal |
-| GPT Image 2 (Edit) | Best Editing #2 | $0.09/generation | Arena-verified #3 on Image Editing Arena (Elo 1257) |
-| Seedream 5.0 Edit | Best Editing #3 | $0.0325/generation | 1/4 to 1/7 the cost of Nano Banana Pro Edit |
-| Flux Kontext Pro | Best Editing #4 | $0.03/generation | One-sentence instruction editing, no fine-tuning |
-| Qwen Image Edit 2511 | Best Editing #5 | $0.04/generation | Open-model editing, industry-leading performance for its tier |
-| Ideogram Character | Best Character Consistency #2 | $0.15/image | Dedicated Character Reference feature |
-| MiniMax Subject Reference | Best Character Consistency #4 | $0.01/generation | Cheapest dedicated subject-consistency endpoint |
-| Vidu Q2 Reference-to-Image | Best Character Consistency #5 | $0.032/generation | Reference-driven character generation |
-| Qwen Image | Best Open Source #2 | $0.03/generation | Apache 2.0, best-in-class open model for in-image text |
-| FLUX.2 [dev] | Best Open Source #3 | $0.015/generation | Current-gen open-weight Flux |
-| HiDream i1 (Full) | Best Open Source #4 | $0.04/generation | Open weights, distinct architecture from Flux/Qwen/Z-Image |
+| Highest-quality text-to-image exploration | GPT Image 2 | `/api/v1/gpt-image-2-text-to-image` | Higher quality/cost tier; verify current account access and price |
+| Fast, bounded concept batch | Flux Dev or Flux Schnell | `/api/v1/flux-dev-image` or `/api/v1/flux-schnell-image` | Faster/lower-cost exploration may need more iteration |
+| Edit a supplied reference | GPT Image 2 image-to-image | `/api/v1/gpt-image-2-image-to-image` | Requires hosted reference URLs and explicit preservation instructions |
+| GPT Image 1.5 edit | GPT Image 1.5 Edit | `/api/v1/gpt-image-1.5-edit` | Current aspect-ratio enum is narrower than GPT Image 2 |
+| Open-model or style exploration | Qwen, FLUX, HiDream, Seedream, or another live result | model-specific | Licensing, quality, parameters, and availability differ; verify each model |
+| Product/background transformation | Live editing or product-photography model | model/recipe-specific | Preserve the actual SKU; do not generate unsupported product facts |
+| Final resolution | MuAPI upscale operation | `/api/v1/ai-image-upscale` | Upscale only the selected candidate; it does not repair bad geometry or text |
 
-## Choosing a model by job, not by vendor
+These are starting points, not universal rankings. A model is suitable only if
+its live schema accepts the required references, aspect ratio, resolution,
+quality, and output count.
 
-"Best AI image model" is the wrong question — the better question is which model fits the specific job:
+## Current request-shape examples
 
-- **Raw quality:** GPT Image 2 tops the Text-to-Image Arena.
-- **Price/quality sweet spot:** Z-Image Turbo, at $0.007/image.
-- **Content-filter too conservative for the use case:** Wan 2.7 or Qwen Image 2.0.
-- **Editing an existing image instead of generating from scratch:** Nano Banana Pro Edit or GPT Image 2 (Edit).
-- **Locking a character's identity across scenes:** Ideogram Character or MiniMax Subject Reference.
-- **Open-weights (licensing/output-rights behave differently than closed models):** Z-Image Turbo or Qwen Image.
-- **Legible in-image text/typography:** Qwen Image is best-in-class for this specifically — a common miss is using a cheap/fast model (e.g. Flux.1 Schnell) for a brief that needs readable headline or CTA text baked into the image, which reliably renders garbled.
+### GPT Image 2 text-to-image
 
-Because every model sits behind the same API key and request pattern, switching models per request is a one-line change, not a new integration — so pick deliberately per image, not once per project.
+The current REST request for `/api/v1/gpt-image-2-text-to-image` requires a
+`prompt` and exposes these optional fields:
 
-Source: [muapi.ai/ai-image-api](https://muapi.ai/ai-image-api) — check that page for current pricing and the latest model additions, since this list reflects a snapshot.
+- `aspect_ratio`: `auto`, `1:1`, `16:9`, `9:16`, `4:3`, or `3:4`;
+- `resolution`: `1K`, `2K`, or `4K`;
+- `quality`: `low`, `medium`, or `high`;
+- `webhook_url` when the host has a secure callback endpoint.
+
+### GPT Image 2 image-to-image
+
+`/api/v1/gpt-image-2-image-to-image` requires `prompt` and `images_list`.
+Every item in `images_list` must be a hosted URL accepted by the provider. The
+current schema exposes the same aspect-ratio, resolution, and quality families
+as text-to-image.
+
+### Flux-style generation
+
+The shared schema behind `/api/v1/flux-dev-image` and
+`/api/v1/flux-schnell-image` currently includes `prompt`, `width`, `height`,
+`num_images` (1–4 in that schema), `model_id`, and `sync`. Only send fields
+that the selected endpoint accepts.
+
+### GPT Image 1.5
+
+`/api/v1/gpt-image-1.5` and `/api/v1/gpt-image-1.5-edit` currently use
+`1:1`, `2:3`, and `3:2` aspect ratios. The edit request requires `prompt` and
+`images_list`.
+
+For the complete logical-to-MCP/REST map and polling contract, see
+[references/muapi-image-tools.md](references/muapi-image-tools.md).
+
+## Model choice by constraint
+
+### Reference fidelity
+
+Use image-to-image/edit when the user says “keep this exact,” “preserve the
+product,” “same person,” or “change only.” List invariants explicitly in the
+prompt and in the QA checklist. If the model cannot accept the needed reference
+count or format, stop and choose a supported model or a post-production path.
+
+### Character or identity consistency
+
+Use a dedicated reference-capable model when the same person, mascot, or
+character must recur. Keep identity references separate from general style
+references, record their order, and require permission before uploading them.
+Do not claim identity consistency from one successful image.
+
+### In-image text and logos
+
+Keep generated copy short. For exact headlines, prices, dates, labels, legal
+language, logos, badges, and packaging, prefer a layout/compositing step using
+approved source art. Always inspect at full size and thumbnail size.
+
+### Aspect ratio and delivery
+
+Prefer a model that natively supports the target ratio. If the source already
+exists, use an edit/reframe workflow for a social crop rather than generating a
+new subject. Record the requested ratio and the actual output dimensions in the
+receipt.
+
+### Cost and iteration
+
+Use a small low-cost concept batch when the brief is uncertain. Move to a
+higher-quality or higher-resolution model only after selecting a direction.
+Do not treat a provider recipe's estimated credits or this guide's tier labels
+as the settled charge; use returned billing metadata.
+
+## Live discovery
+
+When the hosted MCP transport is available, use `search_models` by category or
+keyword before selecting a model that is not already in the current shortlist.
+For REST-only hosts, inspect the model-specific OpenAPI schema or a current
+provider catalog. The public MuAPI recipe registry is also useful for workflow
+selection:
+
+```text
+GET https://api.muapi.ai/api/v1/agent-skills
+GET https://api.muapi.ai/api/v1/agent-skills/{name}
+```
+
+Use `ad-creative`, `amazon-product-listing`, `brand-kit`, `social-pack`, and
+`youtube-thumbnail` as recipe leads when their inputs match the brief. Fetch
+the current recipe body rather than assuming an old prompt or model remains
+valid.
+
+## Evidence and provenance
+
+For every generated candidate, record:
+
+- model display name and exact model/endpoint identifier;
+- schema verification date and transport;
+- operation (text-to-image, image-to-image, edit, enhancement, or upscale);
+- prompt or prompt hash, parameters, reference asset IDs and order;
+- request ID, status, output URLs, settled billing, and QA result;
+- selected parent/child relationship when iterating.
+
+Model quality labels and prices are volatile provider facts. If the live source
+does not return a field, report it as `unknown` rather than filling it from
+memory or a different model.

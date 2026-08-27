@@ -1,72 +1,92 @@
 ---
-name: Thumbnail Generation Agent
+name: Thumbnail Generation
 slug: thumbnail-generation
-version: 1.0.0
+version: 1.1.0
 category: image
-description: Generate video or blog thumbnail variants optimized for click-through, from a title/topic and source footage or images.
-status: blueprint
+description: Produce a small set of truthful, high-contrast video or article thumbnail directions with platform-aware composition and text-safe space.
+status: ready
 muapi_capabilities:
   - media.generate_image
+  - media.edit_image
+  - media.upload_file
+  - media.check_result
+  - media.search_models
 required_connections:
   - muapi
 permissions:
   - draft-only
+  - workspace-write
 ---
 
-# Thumbnail Generation Agent
+# Thumbnail Generation
 
 ## Mission
 
-Produce a set of high-contrast, click-worthy thumbnail variants for a video or article, given its title/topic and optional source imagery.
-
-## Use this agent when
-
-- A user needs a YouTube/blog thumbnail and wants several options to A/B test rather than one final image.
+Create thumbnail directions that communicate the actual content quickly at
+small size. Optimize the visual hook and hierarchy, not a misleading promise
+or an image full of model-generated copy.
 
 ## Required inputs
 
-- The title or core topic of the content.
-- Optional: source frame(s) or images from the actual content to feature.
-- Platform target (YouTube, blog, etc.) for correct aspect ratio.
+- Video/article title or core topic.
+- Platform and target dimensions; use the platform's current requirements.
+- Channel/brand style and audience.
+- Optional source frame, face, product, logo, or other reference image.
 
-## Required connections
+Collect when relevant:
 
-- A Muapi API key (`muapi`).
+- the actual content promise and approved claims;
+- subject emotion/pose and what must remain recognizable;
+- language, overlay copy, safe areas, and number of variants;
+- budget and whether typography will be added in post-production.
 
 ## Model selection
 
-See [MODELS.md](../../MODELS.md) in this repo for the full model catalog and pricing. Thumbnails usually have overlay text baked in, and composited real source frames call for an editing model rather than pure text-to-image — check the catalog's text-rendering and editing entries when picking.
-
-## Available Muapi capabilities
-
-- `media.generate_image` — generate the thumbnail via text-to-image or image-to-image, model chosen per [MODELS.md](../../MODELS.md).
+Use [MODELS.md](../../MODELS.md) and the live provider contract in
+[references/muapi-image-tools.md](../../references/muapi-image-tools.md). Use
+text-to-image for a new concept and image editing when incorporating a real
+source frame or face. A public MuAPI `youtube-thumbnail` recipe is a useful
+starting workflow, but its current model and fields must be rechecked.
 
 ## Workflow
 
-1. Extract the core hook/curiosity gap from the title or topic.
-2. Propose 2-3 distinct visual concepts (e.g. reaction-face + text overlay, before/after split, bold single-object focus).
-3. Pick a model from [MODELS.md](../../MODELS.md) per concept — text-to-image for a from-scratch concept, an editing model if compositing a real source frame.
-4. Generate a thumbnail image per concept via `media.generate_image`, at the target platform's aspect ratio (16:9 for YouTube).
-5. Return all variants for the user to pick or test.
+1. Extract the content hook and write one honest visual promise. Do not invent
+   results, guests, products, or events that do not appear in the content.
+2. Propose two or three distinct concepts, such as emotion-first, single-object
+   contrast, before/after only when factual, or a clean curiosity gap.
+3. Define the subject, focal point, rule-of-thirds placement, background
+   contrast, safe text region, and no-go elements for each concept.
+4. If a local source image is supplied, confirm rights and upload it with
+   `media.upload_file`. Use `media.edit_image` to incorporate or reframe it.
+5. Generate one candidate per approved concept in the target aspect ratio. Keep
+   the first batch bounded and state the call count/cost signal first.
+6. Poll and preserve each result. Review the thumbnail at small size for
+   immediate subject recognition, contrast, crop, facial/subject drift,
+   artifacting, and truthful content representation.
+7. Return suggested overlay copy of three to five words, placement, and
+   post-production typography guidance. Prefer adding exact text outside the
+   image model; if text is generated, verify spelling and legibility.
+8. Offer A/B variants only when the user asks or has approved the additional
+   calls.
 
 ## Decision rules
 
-- Keep text overlay minimal (3-5 words max) and high-contrast against the background.
-- Avoid generating misleading imagery that doesn't match the actual content — thumbnails should represent the content honestly.
-
-## Approval boundaries
-
-`draft-only`. No approval needed to generate variants; publishing the chosen thumbnail to a platform is a separate, user-driven step.
+- One clear focal point beats a crowded collage.
+- Do not use a fake reaction, badge, celebrity, result, or screenshot to imply
+  content the video/article does not contain.
+- Keep overlay copy short and high-contrast; text-rendering in generated images
+  is not a substitute for final typography.
+- Preserve a real source subject rather than regenerating it when identity or
+  product continuity matters.
 
 ## Output format
 
-2-3 thumbnail image URLs, each labeled with its visual concept and the model used.
+Return one row per concept with title/hook, concept label, model/tool, prompt or
+prompt hash, output URL, status, dimensions, suggested overlay, text placement,
+QA notes, and receipt link when saved.
 
 ## Failure and missing-data behavior
 
-If no source imagery is supplied and the topic is too abstract to generate a concrete visual, ask for a source image or a more specific visual direction rather than generating a generic placeholder.
-
-## Example interactions
-
-**User:** "Make me thumbnail options for a video titled 'I Tried Every AI Video Tool So You Don't Have To'."
-**Agent:** Proposes a reaction-face concept, a grid-of-logos concept, and a before/after concept; picks a model from MODELS.md for each, generates one 16:9 thumbnail per concept via `media.generate_image`.
+If the topic is too abstract to create an honest visual, ask for a more
+specific angle or source image. If a source or generation branch fails, report
+it explicitly and do not silently replace it with a generic thumbnail.
