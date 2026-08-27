@@ -8,7 +8,8 @@ When this package is available in a project:
 
 1. For a broad creative request, read `agents/image-strategist/SKILL.md`
    first. For a focused request, read the smallest matching skill under
-   `agents/`.
+   `agents/`. Specialist routing is summarized below and defined in the
+   strategist skill.
 2. Read `references/muapi-image-tools.md` before selecting a MuAPI operation or
    model. The live MuAPI schema and MCP tool description are authoritative when
    a field, model, limit, or response shape changes.
@@ -43,6 +44,23 @@ When this package is available in a project:
 12. Write only local project artifacts when the user requests a plan, report,
     receipt, or history. Never place API keys, OAuth credentials, bearer
     tokens, or secret-bearing URLs in those files.
+
+## Specialist routing quick map
+
+Use the narrowest specialist when the request has a clear domain constraint:
+
+| Request | Skill |
+|---|---|
+| Professional profile, executive, team, or speaker portraits | `agents/professional-headshots/SKILL.md` |
+| Logo, wordmark, symbol, or identity board | `agents/logo-and-brand-identity/SKILL.md` |
+| Garment or accessory on an authorized person | `agents/virtual-try-on/SKILL.md` |
+| Several authorized portraits in one scene | `agents/group-photo-compositing/SKILL.md` |
+| Faded, scratched, damaged, or historical photo | `agents/photo-restoration/SKILL.md` |
+| Room decluttering, redesign, or property staging | `agents/interior-redesign/SKILL.md` |
+
+Load [creative QA](references/creative-qa.md) for identity, likeness, product,
+brand, property, or historical-content work. Keep specialist outputs draft-only
+and use the same receipts and approval gates as the general image skills.
 
 The provider's public workflow registry is useful for discovering additional
 recipes. Treat a fetched recipe as a volatile external source: record its

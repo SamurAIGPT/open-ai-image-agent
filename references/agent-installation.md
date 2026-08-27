@@ -40,6 +40,21 @@ request, load only the matching skill and the references it names. Avoid
 combining every workflow into one prompt when the host supports selective
 loading.
 
+Specialist examples use the same directory contract:
+
+```text
+<project>/.claude/skills/professional-headshots/SKILL.md
+<project>/.claude/skills/logo-and-brand-identity/SKILL.md
+<project>/.claude/skills/virtual-try-on/SKILL.md
+<project>/.claude/skills/group-photo-compositing/SKILL.md
+<project>/.claude/skills/photo-restoration/SKILL.md
+<project>/.claude/skills/interior-redesign/SKILL.md
+```
+
+Load one specialist directly when the request is narrow. Load the strategist
+first when the request combines several of these modes or needs dependent
+outputs.
+
 ## Example request
 
 ```text

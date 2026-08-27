@@ -53,7 +53,7 @@ For each important input or output, record a small manifest such as:
 {
   "schema": "muapi-image-asset.v1",
   "asset_id": "hero-v1",
-  "role": "reference|generated|selected|upscaled",
+  "role": "reference|generated|selected|upscaled|restored|visualization|concept",
   "source": "local|muapi|user-url",
   "filename": "refs/product-front.png",
   "sha256": "...",
@@ -63,6 +63,9 @@ For each important input or output, record a small manifest such as:
   "status": "available|failed|expired|unknown",
   "retrieved_at": "2026-08-28T00:00:00Z",
   "rights_status": "confirmed|pending|unknown",
+  "reference_roles": ["product-primary"],
+  "parent_asset_id": null,
+  "approval_status": "draft|selected|approved|rejected|unknown",
   "notes": "Preserve bottle geometry and label art"
 }
 ```
@@ -82,6 +85,7 @@ Each distinct provider call used by a report should have a receipt containing:
 - prompt hash and, when the user permits it, the prompt text or a link to a
   local prompt file;
 - reference asset IDs and their roles/order;
+- specialist domain, preservation block, and approval gate when applicable;
 - submission and completion timestamps, request ID, status, output URLs,
   provider error, and billing object;
 - calculated QA results, selected variant, iteration relationship, and
@@ -97,8 +101,8 @@ A useful image report contains:
 1. Brief, audience, channel, dimensions, and scope.
 2. Planned calls, model choices, variant count, and budget assumptions.
 3. Generated outputs with IDs, URLs, status, and the model used.
-4. QA observations: subject/product fidelity, composition, text/brand
-   fidelity, artifacts, and required post-production.
+4. QA observations: subject/product/likeness/geometry fidelity as applicable,
+   composition, text/brand fidelity, artifacts, and required post-production.
 5. Selected direction and the exact change for the next iteration.
 6. Rights, claims, platform, accessibility, and approval limitations.
 7. Failed/partial calls and the smallest retry needed.

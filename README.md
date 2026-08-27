@@ -1,7 +1,8 @@
 # AI Image Agent
 
 > A portable, MuAPI-backed creative production agent for image generation,
-> editing, thumbnails, product imagery, and on-brand visual systems.
+> editing, portraits, product imagery, try-on, restoration, thumbnails, and
+> on-brand visual systems.
 
 This repository turns image-production workflows into selective agent skills.
 It is designed for Claude Code, Codex, Cursor, Windsurf, Claude.ai, or any
@@ -43,6 +44,12 @@ provide the routing rules, input contracts, quality gates, and handoff format.
   flag anything that deviates from the palette.”
 - “Compare two image models for this brief, run a small draft batch, and show
   me the tradeoffs before any larger spend.”
+- “Create three professional headshot directions from my authorized photos.
+  Preserve my identity and give me LinkedIn and speaker-profile crops.”
+- “Use this garment and person photo to make a try-on preview. Preserve the
+  pattern and label it clearly as a visualization, not a fit guarantee.”
+- “Restore this family photograph conservatively, keep the original, and mark
+  any reconstructed detail.”
 
 ## Use it with your AI assistant
 
@@ -133,6 +140,12 @@ output URLs, failed variants, and a recommendation for the next round.
 | [Image Editing](agents/image-editing/SKILL.md) | Modify an existing image while preserving selected details. | Input roles, edit instruction, fidelity checks, and variants. |
 | [Image Enhancement](agents/image-enhancement/SKILL.md) | Upscale, remove a background, extend a canvas, or improve a source. | Enhancement operation, before/after details, and delivery checks. |
 | [Product Imagery](agents/product-imagery/SKILL.md) | Build a SKU, catalog, marketplace, or lifestyle image set. | Shot list, product invariants, claims checks, and asset matrix. |
+| [Professional Headshots](agents/professional-headshots/SKILL.md) | Create consent-based LinkedIn, executive, team, speaker, or personal-brand portraits. | Identity roles, style directions, likeness QA, and subject approval. |
+| [Logo and Brand Identity](agents/logo-and-brand-identity/SKILL.md) | Explore logos, wordmarks, symbols, and compact identity boards. | Concept families, legibility review, vector handoff, and trademark caveat. |
+| [Virtual Try-On](agents/virtual-try-on/SKILL.md) | Visualize an authorized garment or accessory on a person. | Person/item roles, product fidelity, simulation label, and fit limitations. |
+| [Group Photo Compositing](agents/group-photo-compositing/SKILL.md) | Combine several authorized portraits into one scene. | Person map, arrangement, consent, likeness QA, and fictional/event label. |
+| [Photo Restoration](agents/photo-restoration/SKILL.md) | Repair, colorize, clean, or upscale old and damaged photographs. | Damage map, conservative version, reconstructed regions, and archive notes. |
+| [Interior Redesign](agents/interior-redesign/SKILL.md) | Declutter, redesign, or stage an authorized room photograph. | Room geometry map, style variants, visualization label, and property QA. |
 | [Ad Creative](agents/ad-creative/SKILL.md) | Develop ad concepts, visual hooks, and platform-ready variants. | Concept directions, copy-safe layout notes, and test matrix. |
 | [Social Pack](agents/social-pack/SKILL.md) | Reframe one approved visual for several social placements. | Shared-source variants with platform dimensions and crop checks. |
 | [Thumbnail Generation](agents/thumbnail-generation/SKILL.md) | Create YouTube, blog, podcast, or editorial thumbnail concepts. | Attention hook, safe area, text plan, and variant comparison. |
@@ -146,13 +159,14 @@ stable when the provider catalog changes. The current mapping is documented in
 
 | Logical capability | MCP operation | REST fallback |
 |---|---|---|
-| `media.generate` | `muapi_image_generate` | Submit to the selected image model endpoint. |
-| `media.edit` | `muapi_image_edit` | Submit to the model's image-to-image or edit endpoint. |
-| `media.upload` | `muapi_upload_file` over stdio, or `muapi_upload_image` for hosted base64 input | `POST /api/v1/upload_file` |
-| `media.enhance` | `muapi_enhance_upscale` and related enhancement tools | Use the selected enhancement endpoint. |
-| `media.poll` | `muapi_predict_result` | `GET /api/v1/predictions/{request_id}/result` |
-| `media.discover` | `search_models` | Read the provider's current model/schema catalog. |
-| `media.balance` | `muapi_account_balance` | Use the provider account endpoint available to the host. |
+| `media.generate_image` | `muapi_image_generate` | Submit to the selected image model endpoint. |
+| `media.edit_image` | `muapi_image_edit` | Submit to the model's image-to-image or edit endpoint. |
+| `media.upload_file` | `muapi_upload_file` over stdio, or `muapi_upload_image` for hosted base64 input | `POST /api/v1/upload_file` |
+| `media.upscale` | `muapi_enhance_upscale` | `POST /api/v1/ai-image-upscale` or the live upscale endpoint. |
+| `media.enhance_image` | `muapi_enhance_bg_remove` and related enhancement tools | Use the selected enhancement endpoint. |
+| `media.check_result` | `muapi_predict_result` | `GET /api/v1/predictions/{request_id}/result` |
+| `media.search_models` | `search_models` | Read the provider's current model/schema catalog. |
+| `media.account_balance` | `muapi_account_balance` | Use the provider account endpoint available to the host. |
 
 The REST fallback submits to a model-specific `/api/v1/{model-slug}` path,
 uploads local files through `/api/v1/upload_file`, and polls the prediction
@@ -216,6 +230,12 @@ The pack covers the planning and handoff layer for these common image tasks:
 - prompt-based text-to-image exploration;
 - reference-guided generation and image-to-image editing;
 - targeted edits that preserve a product, person, logo, or composition;
+- professional headshots, team portraits, and speaker/profile imagery;
+- multi-person portrait compositing with consent and identity checks;
+- garment and accessory try-on visualizations;
+- logo, wordmark, and compact brand-identity exploration;
+- conservative photo restoration and historical-image cleanup;
+- room decluttering, interior redesign, and property-staging concepts;
 - upscaling and quality enhancement;
 - background removal, canvas extension, and other cleanup operations;
 - product listing, catalog, and lifestyle image sets;
@@ -307,6 +327,36 @@ high-stakes or public-facing use.
 3. Reuse the strongest source with Social Pack for placement variants.
 4. Record the model, prompt family, spend, output URLs, and test labels.
 5. Keep publishing and performance decisions outside the image-generation run.
+
+### Professional headshot set
+
+1. Confirm the subject's permission, intended placement, identity invariants,
+   wardrobe preferences, and retouching boundaries.
+2. Upload a small labeled identity set and choose a reference-capable model.
+3. Generate a bounded set of studio, editorial, or industry-specific directions.
+4. Review likeness, anatomy, clothing, crop, background, and unintended age or
+   body changes.
+5. Get subject approval before delivery and upscale only the selected portrait.
+
+### Logo or identity exploration
+
+1. Capture exact brand spelling, applications, audience, tone, colors, and
+   prohibited motifs.
+2. Generate several concept families, keeping wordmark text separate from
+   decorative exploration.
+3. Review concepts at favicon, mobile, print, monochrome, and large sizes.
+4. Select a direction for vectorization, font review, and trademark clearance.
+
+### Restoration or interior visualization
+
+1. Preserve the untouched source and classify the requested repair or room
+   changes.
+2. Choose enhancement for bounded cleanup, or editing for a clearly labeled
+   redesign/reconstruction.
+3. Compare every output against the source for invented detail, identity drift,
+   geometry changes, perspective, and artifacts.
+4. Return conservative and exploratory variants separately with their intended
+   use and unresolved review requirements.
 
 ## Limitations
 

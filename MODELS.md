@@ -97,6 +97,58 @@ higher-quality or higher-resolution model only after selecting a direction.
 Do not treat a provider recipe's estimated credits or this guide's tier labels
 as the settled charge; use returned billing metadata.
 
+## Specialist selection
+
+Specialist skills add domain constraints; they do not replace live schema
+validation. Search by the task and required input shape, then verify the
+returned model accepts the reference count, operation, ratio, resolution, and
+quality fields.
+
+### Professional headshots and group portraits
+
+Use a reference-capable image-to-image or edit model when a real likeness must
+remain recognizable. Separate identity references from wardrobe, lighting, and
+background references, keep their order stable, and prefer a small consistent
+set over a large mixed collection. For group portraits, confirm the provider's
+current multi-image limit rather than assuming an application-level limit.
+
+Run a low-count preview first. Check face shape, eyes, hair, skin tone,
+accessories, hands, occlusion, expression, and identity drift before any
+upscale. A portrait model is not an identity-verification tool.
+
+### Logos and brand identity
+
+Search for models with strong text rendering, sketch/image editing, and clean
+shape handling. Use text-to-image for concept families and image-to-image for
+an authorized sketch or existing brand direction. Keep exact wordmarks,
+registered marks, legal text, and final color values in a layout/vector step
+whenever possible. Generated raster art is not proof of vector editability,
+originality, or trademark clearance.
+
+### Virtual try-on and product placement
+
+Use an edit or compositing model that can distinguish person, garment, product,
+styling, and background roles. Put product invariants in a preservation block:
+cut, material, pattern, color, closures, labels, logo, and item count. Do not
+select a model solely because it creates attractive people; it must preserve
+the item and accept the required inputs.
+
+### Photo restoration
+
+Prefer operation-specific enhancement for denoise, scratch repair, color
+correction, and upscale. Use generative edit only for an explicitly requested
+reconstruction and record which regions may be inferred. Preserve a conservative
+version and the untouched original. Never describe model-invented facial or
+historical detail as recovered fact.
+
+### Interior redesign and staging
+
+Use image editing for a real room so walls, doors, windows, floors, fixtures,
+and perspective remain anchored. Use text-to-image for a moodboard or fictional
+scene where the original geometry is not a claim. Prefer models that accept a
+room reference and the requested ratio, and review furniture scale, occlusion,
+reflections, and structural drift before labeling a result as a visualization.
+
 ## Live discovery
 
 When the hosted MCP transport is available, use `search_models` by category or

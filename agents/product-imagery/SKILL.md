@@ -1,9 +1,9 @@
 ---
 name: Product Imagery
 slug: product-imagery
-version: 1.0.0
+version: 1.1.0
 category: image
-description: Plan and produce truthful ecommerce or commercial product-image sets from approved SKU references, with channel-specific QA and provenance.
+description: Plan and produce truthful ecommerce, marketplace, reseller, or commercial product-image sets from approved SKU references, with channel-specific QA and provenance.
 status: ready
 muapi_capabilities:
   - media.generate_image
@@ -33,6 +33,8 @@ catalogs, and commercial campaigns.
 - Product facts that must remain true: shape, dimensions, material, finish,
   color, logo, controls, included components, and packaging.
 - Target channel/category, audience, deliverables, and required formats.
+- Product mode: marketplace primary, catalog set, lifestyle campaign, reseller
+  refresh, pet-product scene, or another explicitly named use.
 
 Collect when relevant:
 
@@ -50,26 +52,47 @@ If a public MuAPI recipe such as `amazon-product-listing` matches the brief,
 use it as a workflow lead but re-check its current inputs, model, cost, and
 platform rules before execution.
 
+## Product modes and source roles
+
+Choose the mode before choosing a model. A single product can have several
+roles, but the output must not blur a verified product view with a campaign
+concept.
+
+| Mode | Typical roles | Primary preservation rule |
+|---|---|---|
+| Marketplace listing | clean primary, secondary detail, scale/dimensions, packaging | Exact SKU, quantity, label, background, and category requirements. |
+| Catalog or product page | packshot, detail, feature, lifestyle | Product geometry and approved feature language remain fixed. |
+| Reseller refresh | background cleanup, crop, lighting, condition-preserving enhancement | Improve presentation without hiding damage or changing the item being sold. |
+| Lifestyle campaign | hero scene, use context, seasonal or audience variant | Treat generated setting as creative context; do not invent product performance. |
+| Pet or companion-product scene | product plus animal/owner context | Preserve product truth and label animal/owner behavior as illustrative. |
+
+Label uploaded inputs as `product-primary`, `product-detail`, `packaging`,
+`scale`, `style`, `background`, `prop`, or `layout`. `style` and `background`
+references may influence composition but must not replace the product identity.
+
 ## Workflow
 
 1. Read `.image/project.md` and prior product manifests. Confirm the exact SKU
    and separate observed product facts from creative choices.
 2. Split the deliverable into channel-specific roles: clean primary, lifestyle
    context, scale/dimensions, feature/detail, packaging, or approved
-   comparison. Do not assume a single image can satisfy all roles.
+   comparison. Assign each role to a product mode and do not assume a single
+   image can satisfy all roles.
 3. Inspect source coverage. Ask for missing views or mark the result as a
    concept/mockup when the supplied reference cannot establish the product's
    hidden sides, material, color, or scale.
 4. For a source-based visual, upload the reference via `media.upload_file` and
    prefer editing/product-photography paths that preserve the actual item. Use
    text-to-image for a scene only when it will not be presented as a verified
-   product fact.
+   product fact. For reseller cleanup, use enhancement/background operations
+   before considering a creative edit.
 5. Use approved label, logo, packaging, price, certification, and copy assets
    through compositing or post-production where possible. Do not ask the model
    to invent them.
 6. State the planned images, calls, model choices, cost signal, and review gate
    before a parallel batch. Run independent roles in parallel only after the
-   product facts and channel scope are confirmed.
+   product facts, mode, and channel scope are confirmed. Keep exact-label and
+   dimensions work on a separate review path from lifestyle exploration.
 7. Poll and record every variant. Compare product geometry, color, label,
    included quantity, scale, shadows, reflections, and text against the source.
 8. Upscale only selected candidates. Return an approval checklist and flag
@@ -89,7 +112,7 @@ platform rules before execution.
 
 ## Output format
 
-Return a channel/role table with asset ID, source references, model/tool,
+Return a mode/channel/role table with asset ID, source roles, model/tool,
 dimensions, output URL, status, product-fidelity observations, claims/platform
 limitations, alt-text guidance, and receipt links.
 

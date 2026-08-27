@@ -36,6 +36,53 @@ model to redraw approved packaging, label text, certification marks, barcodes,
 ratings, testimonials, or logos when the source asset can be preserved or
 composited.
 
+## Specialist checks
+
+### Portraits and group images
+
+- Review every subject independently for face shape, eyes, hair, skin tone,
+  expression, hands, accessories, and unintended identity drift.
+- Verify permission for each recognizable person and record the input order and
+  intended placement in a group image.
+- Label fictional or reconstructed scenes so they cannot be mistaken for
+  documentary evidence, an official portrait, or proof of a relationship.
+
+### Logos and brand identity
+
+- Check exact spelling, letterforms, spacing, contrast, one-color behavior,
+  small-size legibility, and accidental symbols.
+- Separate generated concept art from approved wordmarks, vector files, fonts,
+  registered marks, and final production layouts.
+- Require human design review and trademark/originality review before adoption;
+  visual plausibility is not clearance.
+
+### Virtual try-on and product placement
+
+- Compare the person and item sources separately: face/body continuity,
+  garment cut, material, pattern, color, seams, closures, logos, and item count.
+- Label the output as a visualization and do not present it as proof of fit,
+  size, comfort, fabric performance, or exact color.
+- Review skin, hair, hands, occlusion, shadows, reflections, and product edges
+  for artifacts introduced by the placement.
+
+### Photo restoration
+
+- Keep the untouched original and identify which regions were cleaned,
+  colorized, upscaled, or reconstructed.
+- Check faces, text, dates, clothing, objects, architecture, grain, and color
+  against the source; do not call invented detail recovered fact.
+- Do not use a restored image as forensic, historical-authenticity, or identity
+  evidence without qualified human review.
+
+### Interior redesign and staging
+
+- Check walls, doors, windows, floors, fixtures, perspective, furniture scale,
+  reflections, and structural boundaries against the source.
+- Confirm that staging did not remove safety features or imply measurements,
+  availability, property condition, or renovation feasibility.
+- Mark altered images as visualization/concept when they could be mistaken for
+  an unmodified listing photograph.
+
 ## Commercial and platform review
 
 - Separate a platform's primary image from secondary, lifestyle, infographic,

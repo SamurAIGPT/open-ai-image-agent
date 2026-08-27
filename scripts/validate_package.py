@@ -58,9 +58,15 @@ def main() -> int:
         "image-generation",
         "image-project-setup",
         "image-strategist",
+        "group-photo-compositing",
+        "interior-redesign",
+        "logo-and-brand-identity",
+        "photo-restoration",
+        "professional-headshots",
         "product-imagery",
         "social-pack",
         "thumbnail-generation",
+        "virtual-try-on",
     }
     actual_slugs = {skill.parent.name for skill in skills}
     if actual_slugs != expected_slugs:
